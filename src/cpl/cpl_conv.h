@@ -198,10 +198,10 @@ void CPL_DLL *CPLScanPointer( const char *, int );
 /* -------------------------------------------------------------------- */
 int CPL_DLL CPLPrintString( char *, const char *, int );
 int CPL_DLL CPLPrintStringFill( char *, const char *, int );
-int CPL_DLL CPLPrintInt32( char *, GInt32 , int );
-int CPL_DLL CPLPrintUIntBig( char *, GUIntBig , int );
+int CPL_DLL CPLPrintInt32( char *, GInt32, int );
+int CPL_DLL CPLPrintUIntBig( char *, GUIntBig, int );
 int CPL_DLL CPLPrintDouble( char *, const char *, double, char * );
-int CPL_DLL CPLPrintTime( char *, int , const char *, const struct tm *,
+int CPL_DLL CPLPrintTime( char *, int, const char *, const struct tm *,
                           char * );
 int CPL_DLL CPLPrintPointer( char *, void *, int );
 
@@ -236,8 +236,8 @@ const char CPL_DLL *CPLFormCIFilename( const char *pszPath,
                                        const char *pszBasename,
                                        const char *pszExtension );
 const char CPL_DLL *CPLResetExtension( const char *, const char * );
-const char CPL_DLL *CPLProjectRelativeFilename( const char *pszProjectDir, 
-                                            const char *pszSecondaryFilename );
+const char CPL_DLL *CPLProjectRelativeFilename( const char *pszProjectDir,
+        const char *pszSecondaryFilename );
 int CPL_DLL CPLIsFilenameRelative( const char *pszFilename );
 const char CPL_DLL *CPLExtractRelativePath(const char *, const char *, int *);
 
@@ -246,10 +246,10 @@ const char CPL_DLL *CPLExtractRelativePath(const char *, const char *, int *);
 /* -------------------------------------------------------------------- */
 typedef const char *(*CPLFileFinder)(const char *, const char *);
 
-const char    CPL_DLL *CPLFindFile(const char *pszClass, 
+const char    CPL_DLL *CPLFindFile(const char *pszClass,
                                    const char *pszBasename);
-const char    CPL_DLL *CPLDefaultFindFile(const char *pszClass, 
-                                          const char *pszBasename);
+const char    CPL_DLL *CPLDefaultFindFile(const char *pszClass,
+        const char *pszBasename);
 void          CPL_DLL CPLPushFileFinder( CPLFileFinder pfnFinder );
 CPLFileFinder CPL_DLL CPLPopFileFinder(void);
 void          CPL_DLL CPLPushFinderLocation( const char * );
@@ -265,7 +265,8 @@ int CPL_DLL     CPLStat( const char *, VSIStatBuf * );
 /*      Reference counted file handle manager.  Makes sharing file      */
 /*      handles more practical.                                         */
 /* -------------------------------------------------------------------- */
-typedef struct {
+typedef struct
+{
     FILE *fp;
     int   nRefCount;
     int   bLarge;
@@ -287,7 +288,7 @@ const char CPL_DLL *CPLDecToDMS( double dfAngle, const char * pszAxis,
 double CPL_DLL CPLPackedDMSToDec( double );
 double CPL_DLL CPLDecToPackedDMS( double dfDec );
 
-void CPL_DLL CPLStringToComplex( const char *pszString, 
+void CPL_DLL CPLStringToComplex( const char *pszString,
                                  double *pdfReal, double *pdfImag );
 
 /* -------------------------------------------------------------------- */
@@ -305,10 +306,10 @@ CPL_C_END
 
 class CPLLocaleC
 {
-  private:
+private:
     char *pszOldLocale;
 
-  public:
+public:
     CPLLocaleC();
     ~CPLLocaleC();
 };

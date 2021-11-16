@@ -4,7 +4,7 @@
  * Project:  CPL - Common Portability Library
  * Author:   Frank Warmerdam, warmerdam@pobox.com
  * Purpose:  Include file defining Virtual File System (VSI) functions, a
- *           layer over POSIX file and other system services. 
+ *           layer over POSIX file and other system services.
  *
  ******************************************************************************
  * Copyright (c) 1998, Frank Warmerdam
@@ -27,7 +27,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  ******************************************************************************
- * 
+ *
  * $Log: cpl_vsi.h,v $
  * Revision 1.31  2006/03/27 15:24:41  fwarmerdam
  * buffer in FWrite is const
@@ -219,12 +219,12 @@ void CPL_DLL VSIInstallMemFileHandler(void);
 void CPL_DLL VSIInstallLargeFileHandler(void);
 void CPL_DLL VSICleanupFileManager(void);
 
-FILE CPL_DLL *VSIFileFromMemBuffer( const char *pszFilename, 
-                                    GByte *pabyData, 
+FILE CPL_DLL *VSIFileFromMemBuffer( const char *pszFilename,
+                                    GByte *pabyData,
                                     vsi_l_offset nDataLength,
                                     int bTakeOwnership );
-GByte CPL_DLL *VSIGetMemFileBuffer( const char *pszFilename, 
-                                    vsi_l_offset *pnDataLength, 
+GByte CPL_DLL *VSIGetMemFileBuffer( const char *pszFilename,
+                                    vsi_l_offset *pnDataLength,
                                     int bUnlinkAndSeize );
 
 /* ==================================================================== */

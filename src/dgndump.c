@@ -70,23 +70,57 @@
 
 CPL_CVSID("$Id: dgndump.c,v 1.12 2005/11/18 17:09:09 fwarmerdam Exp $");
 
-static void DGNDumpRawElement( DGNHandle hDGN, DGNElemCore *psCore,
-                               FILE *fpOut );
-
 /************************************************************************/
 /*                               Usage()                                */
 /************************************************************************/
 
-static void Usage()
-
+static void Usage(char *progname)
 {
-    printf( "Usage: dgndump [-e xmin ymin xmax ymax] [-s] [-r n] filename.dgn\n" );
-    printf( "\n" );
-    printf( "  -e xmin ymin xmax ymax: only get elements within extents.\n" );
-    printf( "  -s: produce summary report of element types and levels.\n");
-    printf( "  -r n: report raw binary contents of elements of type n.\n");
+    printf("Usage: %s [-e xmin ymin xmax ymax] [-s] [-r n] filename.dgn\n", progname);
+    printf("\n");
+    printf("  -e xmin ymin xmax ymax: only get elements within extents.\n");
+    printf("  -s: produce summary report of element types and levels.\n");
+    printf("  -r n: report raw binary contents of elements of type n.\n");
 
     exit( 1 );
+}
+
+/************************************************************************/
+/*                         DGNDumpRawElement()                          */
+/************************************************************************/
+
+static void DGNDumpRawElement( DGNHandle hDGN, DGNElemCore *psCore,
+                               FILE *fpOut )
+{
+    int         i, iChar = 0;
+    char        szLine[80];
+
+    fprintf( fpOut, "  Raw Data (%d bytes):\n", psCore->raw_bytes );
+    for( i = 0; i < psCore->raw_bytes; i++ )
+    {
+        char    szHex[3];
+
+        if( (i % 16) == 0 )
+        {
+            sprintf( szLine, "%6d: %71s", i, " " );
+            iChar = 0;
+        }
+
+        sprintf( szHex, "%02x", psCore->raw_data[i] );
+        strncpy( szLine+8+iChar*2, szHex, 2 );
+
+        if( psCore->raw_data[i] < 32 || psCore->raw_data[i] > 127 )
+            szLine[42+iChar] = '.';
+        else
+            szLine[42+iChar] = psCore->raw_data[i];
+
+        if( i == psCore->raw_bytes - 1 || (i+1) % 16 == 0 )
+        {
+            fprintf( fpOut, "%s\n", szLine );
+        }
+
+        iChar++;
+    }
 }
 
 /************************************************************************/
@@ -94,7 +128,6 @@ static void Usage()
 /************************************************************************/
 
 int main( int argc, char ** argv )
-
 {
     DGNHandle   hDGN;
     DGNElemCore *psElement;
@@ -130,13 +163,13 @@ int main( int argc, char ** argv )
             bReportExtents = TRUE;
         }
         else if( argv[iArg][0] == '-' || pszFilename != NULL )
-            Usage();
-        else 
+            Usage(argv[0]);
+        else
             pszFilename = argv[iArg];
     }
 
     if( pszFilename == NULL )
-        Usage();
+        Usage(argv[0]);
 
     hDGN = DGNOpen( pszFilename, FALSE );
     if( hDGN == NULL )
@@ -164,7 +197,7 @@ int main( int argc, char ** argv )
                 if( DGNGetElementExtents( hDGN, psElement, &sMin, &sMax ) )
                     printf( "  Extents: (%.6f,%.6f,%.6f)\n"
                             "        to (%.6f,%.6f,%.6f)\n",
-                            sMin.x, sMin.y, sMin.z, 
+                            sMin.x, sMin.y, sMin.z,
                             sMax.x, sMax.y, sMax.z );
             }
 
@@ -181,17 +214,17 @@ int main( int argc, char ** argv )
         double                  adfExtents[6];
 
         DGNGetExtents( hDGN, adfExtents );
-        printf( "X Range: %.2f to %.2f\n", 
+        printf( "X Range: %.2f to %.2f\n",
                 adfExtents[0], adfExtents[3] );
-        printf( "Y Range: %.2f to %.2f\n", 
+        printf( "Y Range: %.2f to %.2f\n",
                 adfExtents[1], adfExtents[4] );
-        printf( "Z Range: %.2f to %.2f\n", 
+        printf( "Z Range: %.2f to %.2f\n",
                 adfExtents[2], adfExtents[5] );
 
         pasEI = DGNGetElementIndex( hDGN, &nCount );
 
         printf( "Total Elements: %d\n", nCount );
-        
+
         memset( anLevelTypeCount, 0, 128*64*sizeof(int) );
         memset( anLevelCount, 0, 64*sizeof(int) );
         memset( anTypeCount, 0, 128*sizeof(int) );
@@ -211,8 +244,8 @@ int main( int argc, char ** argv )
         {
             if( anTypeCount[nType] != 0 )
             {
-                printf( "Type %s: %d\n", 
-                        DGNTypeToName( nType ), 
+                printf( "Type %s: %d\n",
+                        DGNTypeToName( nType ),
                         anTypeCount[nType] );
             }
         }
@@ -226,16 +259,16 @@ int main( int argc, char ** argv )
             if( anLevelCount[nLevel] == 0 )
                 continue;
 
-            printf( "Level %d, %d elements:\n", 
-                    nLevel, 
+            printf( "Level %d, %d elements:\n",
+                    nLevel,
                     anLevelCount[nLevel] );
 
             for( nType = 0; nType < 128; nType++ )
             {
                 if( anLevelTypeCount[nLevel * 128 + nType] != 0 )
                 {
-                    printf( "  Type %s: %d\n", 
-                            DGNTypeToName( nType ), 
+                    printf( "  Type %s: %d\n",
+                            DGNTypeToName( nType ),
                             anLevelTypeCount[nLevel*128 + nType] );
                 }
             }
@@ -248,45 +281,3 @@ int main( int argc, char ** argv )
 
     return 0;
 }
-
-/************************************************************************/
-/*                         DGNDumpRawElement()                          */
-/************************************************************************/
-
-static void DGNDumpRawElement( DGNHandle hDGN, DGNElemCore *psCore, 
-                               FILE *fpOut )
-
-{
-    int         i, iChar = 0;
-    char        szLine[80];
-
-    fprintf( fpOut, "  Raw Data (%d bytes):\n", psCore->raw_bytes );
-    for( i = 0; i < psCore->raw_bytes; i++ )
-    {
-        char    szHex[3];
-
-        if( (i % 16) == 0 )                                             
-        {
-            sprintf( szLine, "%6d: %71s", i, " " );
-            iChar = 0;
-        }
-
-        sprintf( szHex, "%02x", psCore->raw_data[i] );
-        strncpy( szLine+8+iChar*2, szHex, 2 );
-        
-        if( psCore->raw_data[i] < 32 || psCore->raw_data[i] > 127 )
-            szLine[42+iChar] = '.';
-        else
-            szLine[42+iChar] = psCore->raw_data[i];
-
-        if( i == psCore->raw_bytes - 1 || (i+1) % 16 == 0 )
-        {
-            fprintf( fpOut, "%s\n", szLine );
-        }
-
-        iChar++;
-    }
-}
-
-
-

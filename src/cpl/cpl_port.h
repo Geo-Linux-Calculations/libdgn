@@ -3,8 +3,8 @@
  *
  * Project:  CPL - Common Portability Library
  * Author:   Frank Warmerdam, warmerdam@pobox.com
- * Purpose:  Include file providing low level portability services for CPL.  
- *           This should be the first include file for any CPL based code.  
+ * Purpose:  Include file providing low level portability services for CPL.
+ *           This should be the first include file for any CPL based code.
  *
  ******************************************************************************
  * Copyright (c) 1998, 2005, Frank Warmerdam <warmerdam@pobox.com>
@@ -152,7 +152,7 @@
 
 #if defined(HAVE_ERRNO_H)
 #  include <errno.h>
-#endif 
+#endif
 
 #ifdef HAVE_LOCALE_H
 #  include <locale.h>
@@ -252,7 +252,7 @@ typedef unsigned long    GUIntBig;
 #ifdef _MSC_VER
 #  define FORCE_CDECL  __cdecl
 #else
-#  define FORCE_CDECL 
+#  define FORCE_CDECL
 #endif
 
 #ifndef NULL
@@ -301,8 +301,8 @@ int strncasecmp(char * str1, char * str2, int len);
 char * strdup (char *instr);
 #endif
 
-#ifndef CPL_THREADLOCAL 
-#  define CPL_THREADLOCAL 
+#ifndef CPL_THREADLOCAL
+#  define CPL_THREADLOCAL
 #endif
 
 /* -------------------------------------------------------------------- */
@@ -334,7 +334,7 @@ char * strdup (char *instr);
 #  define CPLIsFinite(x) _finite(x)
 #else
 #  define CPLIsNan(x) isnan(x)
-#  ifdef isinf 
+#  ifdef isinf
 #    define CPLIsInf(x) isinf(x)
 #    define CPLIsFinite(x) (!isnan(x) && !isinf(x))
 #  else
@@ -345,8 +345,8 @@ char * strdup (char *instr);
 
 /*---------------------------------------------------------------------
  *                         CPL_LSB and CPL_MSB
- * Only one of these 2 macros should be defined and specifies the byte 
- * ordering for the current platform.  
+ * Only one of these 2 macros should be defined and specifies the byte
+ * ordering for the current platform.
  * This should be defined in the Makefile, but if it is not then
  * the default is CPL_LSB (Intel ordering, LSB first).
  *--------------------------------------------------------------------*/
@@ -380,8 +380,8 @@ char * strdup (char *instr);
     byTemp = _pabyDataT[0];                                       \
     _pabyDataT[0] = _pabyDataT[1];                                \
     _pabyDataT[1] = byTemp;                                       \
-}                                                                    
-                                                            
+}
+
 #define CPL_SWAP32(x) \
         ((GUInt32)( \
             (((GUInt32)(x) & (GUInt32)0x000000ffUL) << 24) | \
@@ -399,8 +399,8 @@ char * strdup (char *instr);
     byTemp = _pabyDataT[1];                                       \
     _pabyDataT[1] = _pabyDataT[2];                                \
     _pabyDataT[2] = byTemp;                                       \
-}                                                                    
-                                                            
+}
+
 #define CPL_SWAP64PTR(x) \
 {                                                                 \
     GByte       byTemp, *_pabyDataT = (GByte *) (x);              \
@@ -417,8 +417,8 @@ char * strdup (char *instr);
     byTemp = _pabyDataT[3];                                       \
     _pabyDataT[3] = _pabyDataT[4];                                \
     _pabyDataT[4] = byTemp;                                       \
-}                                                                    
-                                                            
+}
+
 
 /* Until we have a safe 64 bits integer data type defined, we'll replace
 m * this version of the CPL_SWAP64() macro with a less efficient one.
@@ -443,22 +443,22 @@ m * this version of the CPL_SWAP64() macro with a less efficient one.
 #  define CPL_LSBWORD16(x)      CPL_SWAP16(x)
 #  define CPL_MSBWORD32(x)      (x)
 #  define CPL_LSBWORD32(x)      CPL_SWAP32(x)
-#  define CPL_MSBPTR16(x)       
+#  define CPL_MSBPTR16(x)
 #  define CPL_LSBPTR16(x)       CPL_SWAP16PTR(x)
-#  define CPL_MSBPTR32(x)       
+#  define CPL_MSBPTR32(x)
 #  define CPL_LSBPTR32(x)       CPL_SWAP32PTR(x)
-#  define CPL_MSBPTR64(x)       
+#  define CPL_MSBPTR64(x)
 #  define CPL_LSBPTR64(x)       CPL_SWAP64PTR(x)
 #else
 #  define CPL_LSBWORD16(x)      (x)
 #  define CPL_MSBWORD16(x)      CPL_SWAP16(x)
 #  define CPL_LSBWORD32(x)      (x)
 #  define CPL_MSBWORD32(x)      CPL_SWAP32(x)
-#  define CPL_LSBPTR16(x)       
+#  define CPL_LSBPTR16(x)
 #  define CPL_MSBPTR16(x)       CPL_SWAP16PTR(x)
-#  define CPL_LSBPTR32(x)       
+#  define CPL_LSBPTR32(x)
 #  define CPL_MSBPTR32(x)       CPL_SWAP32PTR(x)
-#  define CPL_LSBPTR64(x)       
+#  define CPL_LSBPTR64(x)
 #  define CPL_MSBPTR64(x)       CPL_SWAP64PTR(x)
 #endif
 

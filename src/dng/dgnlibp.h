@@ -2,7 +2,7 @@
  * $Id: dgnlibp.h,v 1.18 2003/06/27 14:50:53 warmerda Exp $
  *
  * Project:  Microstation DGN Access Library
- * Purpose:  Internal (privatE) datastructures, and prototypes for DGN Access 
+ * Purpose:  Internal (privatE) datastructures, and prototypes for DGN Access
  *           Library.
  * Author:   Frank Warmerdam, warmerdam@pobox.com
  *
@@ -96,7 +96,8 @@
 #define PI  3.1415926535897932384626433832795
 #endif
 
-typedef struct {
+typedef struct
+{
     FILE        *fp;
     int         next_element_id;
 

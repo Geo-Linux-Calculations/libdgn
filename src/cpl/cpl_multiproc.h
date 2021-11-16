@@ -14,16 +14,16 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
  * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  **********************************************************************
  *
@@ -106,12 +106,12 @@ CPL_C_END
 
 class CPLMutexHolder
 {
-  private:
+private:
     void       *hMutex;
     const char *pszFile;
     int         nLine;
 
-  public:
+public:
 
     CPLMutexHolder( void **phMutex, double dfWaitInSeconds = 1000.0,
                     const char *pszFile = __FILE__,
@@ -133,7 +133,7 @@ class CPLMutexHolder
 #define CTLS_PATHBUF                    7         /* cpl_path.cpp */
 #define CTLS_SPRINTFBUF                 8         /* cpl_string.cpp */
 
-#define CTLS_MAX                       32         
+#define CTLS_MAX                       32
 
 CPL_C_START
 void CPL_DLL * CPLGetTLS( int nIndex );

@@ -15,16 +15,16 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
  * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  **********************************************************************
  *
@@ -65,7 +65,7 @@ CPL_CVSID("$Id: cpl_dir.cpp,v 1.6 2006/02/19 21:54:34 mloskot Exp $");
 #else
 #  include <wce_io.h>
 #endif
- 
+
 
 
 /**********************************************************************
@@ -94,13 +94,14 @@ char **CPLReadDir(const char *pszPath)
         do
         {
             papszDir = CSLAddString(papszDir, c_file.name);
-        } while( _findnext( hFile, &c_file ) == 0 );
+        }
+        while( _findnext( hFile, &c_file ) == 0 );
 
         _findclose( hFile );
     }
     else
     {
-        /* Should we generate an error???  
+        /* Should we generate an error???
          * For now we'll just return NULL (at the end of the function)
          */
     }
@@ -165,7 +166,7 @@ char **CPLReadDir(const char *pszPath)
     }
     else
     {
-        /* Should we generate an error???  
+        /* Should we generate an error???
          * For now we'll just return NULL (at the end of the function)
          */
     }

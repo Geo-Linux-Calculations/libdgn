@@ -63,19 +63,18 @@ CPL_CVSID("$Id: dgnwritetest.c,v 1.8 2006/01/20 16:58:28 kintel Exp $");
 /************************************************************************/
 
 int main( int argc, char ** argv )
-
 {
     DGNHandle hNewDGN;
     DGNElemCore *psMembers[2];
     DGNPoint   asPoints[10];
     DGNElemCore *psLine;
 
-/* -------------------------------------------------------------------- */
-/*      Create new DGN file.                                            */
-/* -------------------------------------------------------------------- */
-    hNewDGN = DGNCreate( "out.dgn", "seed.dgn", 
+    /* -------------------------------------------------------------------- */
+    /*      Create new DGN file.                                            */
+    /* -------------------------------------------------------------------- */
+    hNewDGN = DGNCreate( "out.dgn", "seed.dgn",
                          DGNCF_USE_SEED_UNITS
-                         | DGNCF_USE_SEED_ORIGIN, 
+                         | DGNCF_USE_SEED_ORIGIN,
                          0.0, 0.0, 0.0, 0, 0, "", "" );
 
     if( hNewDGN == NULL )
@@ -84,9 +83,9 @@ int main( int argc, char ** argv )
         exit( 10 );
     }
 
-/* -------------------------------------------------------------------- */
-/*      Write one line segment to it.                                   */
-/* -------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------- */
+    /*      Write one line segment to it.                                   */
+    /* -------------------------------------------------------------------- */
     memset( &asPoints, 0, sizeof(asPoints) );
 
     asPoints[0].x = 0;
@@ -101,9 +100,9 @@ int main( int argc, char ** argv )
     DGNWriteElement( hNewDGN, psLine );
     DGNFreeElement( hNewDGN, psLine );
 
-/* -------------------------------------------------------------------- */
-/*      Write a line string.                                            */
-/* -------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------- */
+    /*      Write a line string.                                            */
+    /* -------------------------------------------------------------------- */
     asPoints[0].x = 0;
     asPoints[0].y = 1000;
     asPoints[1].x = 6000;
@@ -116,32 +115,32 @@ int main( int argc, char ** argv )
     DGNWriteElement( hNewDGN, psLine );
     DGNFreeElement( hNewDGN, psLine );
 
-/* -------------------------------------------------------------------- */
-/*      Write an Arc.                                                   */
-/* -------------------------------------------------------------------- */
-    psLine = DGNCreateArcElem( hNewDGN, DGNT_ARC, 
-                               2000.0, 3000.0, 500.0, 2000.0, 1000.0, 
+    /* -------------------------------------------------------------------- */
+    /*      Write an Arc.                                                   */
+    /* -------------------------------------------------------------------- */
+    psLine = DGNCreateArcElem( hNewDGN, DGNT_ARC,
+                               2000.0, 3000.0, 500.0, 2000.0, 1000.0,
                                0.0, 270.0, 0.0, NULL );
-    
+
     DGNUpdateElemCore( hNewDGN, psLine, 15, 0, 3, 1, 0 );
     DGNWriteElement( hNewDGN, psLine );
     DGNFreeElement( hNewDGN, psLine );
 
-/* -------------------------------------------------------------------- */
-/*      Write an Ellipse with fill info.                                */
-/* -------------------------------------------------------------------- */
-    psLine = DGNCreateArcElem( hNewDGN, DGNT_ELLIPSE, 
-                               200.0, 30.0, 5.0, 10.0, 10.0, 
+    /* -------------------------------------------------------------------- */
+    /*      Write an Ellipse with fill info.                                */
+    /* -------------------------------------------------------------------- */
+    psLine = DGNCreateArcElem( hNewDGN, DGNT_ELLIPSE,
+                               200.0, 30.0, 5.0, 10.0, 10.0,
                                0.0, 360.0, 0.0, NULL );
-    
+
     DGNUpdateElemCore( hNewDGN, psLine, 15, 0, 3, 1, 0 );
     DGNWriteElement( hNewDGN, psLine );
     DGNFreeElement( hNewDGN, psLine );
 
-/* -------------------------------------------------------------------- */
-/*      Write some text.                                                */
-/* -------------------------------------------------------------------- */
-    psLine = DGNCreateTextElem( hNewDGN, "This is a test string", 
+    /* -------------------------------------------------------------------- */
+    /*      Write some text.                                                */
+    /* -------------------------------------------------------------------- */
+    psLine = DGNCreateTextElem( hNewDGN, "This is a test string",
                                 0, DGNJ_CENTER_TOP, 200.0, 200.0, 0.0, NULL,
                                 2000.0, 3000.0, 0.0 );
 
@@ -167,9 +166,9 @@ int main( int argc, char ** argv )
     DGNWriteElement( hNewDGN, psLine );
     DGNFreeElement( hNewDGN, psLine );
 
-/* -------------------------------------------------------------------- */
-/*      Write a complex shape consisting of two line strings.           */
-/* -------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------- */
+    /*      Write a complex shape consisting of two line strings.           */
+    /* -------------------------------------------------------------------- */
     asPoints[0].x = 8000;
     asPoints[0].y = 8000;
     asPoints[1].x = 6000;
@@ -177,7 +176,7 @@ int main( int argc, char ** argv )
     asPoints[2].x = 6000;
     asPoints[2].y = 6000;
 
-    psMembers[0] = DGNCreateMultiPointElem( hNewDGN, DGNT_LINE_STRING, 3, 
+    psMembers[0] = DGNCreateMultiPointElem( hNewDGN, DGNT_LINE_STRING, 3,
                                             asPoints );
     DGNUpdateElemCore( hNewDGN, psMembers[0], 9, 0, 3, 1, 0 );
 
@@ -188,13 +187,13 @@ int main( int argc, char ** argv )
     asPoints[2].x = 8000;
     asPoints[2].y = 8000;
 
-    psMembers[1] = DGNCreateMultiPointElem( hNewDGN, DGNT_LINE_STRING, 3, 
+    psMembers[1] = DGNCreateMultiPointElem( hNewDGN, DGNT_LINE_STRING, 3,
                                             asPoints );
     DGNUpdateElemCore( hNewDGN, psMembers[1], 9, 0, 3, 1, 0 );
 
-    psLine = DGNCreateComplexHeaderFromGroup( hNewDGN, 
-                                              DGNT_COMPLEX_SHAPE_HEADER,
-                                              2, psMembers );
+    psLine = DGNCreateComplexHeaderFromGroup( hNewDGN,
+             DGNT_COMPLEX_SHAPE_HEADER,
+             2, psMembers );
 
     DGNUpdateElemCore( hNewDGN, psLine, 9, 0, 3, 1, 0 );
     DGNAddShapeFillInfo( hNewDGN, psLine, 7 );
@@ -207,9 +206,9 @@ int main( int argc, char ** argv )
     DGNFreeElement( hNewDGN, psMembers[0] );
     DGNFreeElement( hNewDGN, psMembers[1] );
 
-/* -------------------------------------------------------------------- */
-/*      Write a cell with two lines.                                    */
-/* -------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------- */
+    /*      Write a cell with two lines.                                    */
+    /* -------------------------------------------------------------------- */
     asPoints[0].x = 7000;
     asPoints[0].y = 7000;
     asPoints[1].x = 5000;
@@ -217,7 +216,7 @@ int main( int argc, char ** argv )
     asPoints[2].x = 5000;
     asPoints[2].y = 5000;
 
-    psMembers[0] = DGNCreateMultiPointElem( hNewDGN, DGNT_LINE_STRING, 3, 
+    psMembers[0] = DGNCreateMultiPointElem( hNewDGN, DGNT_LINE_STRING, 3,
                                             asPoints );
     DGNUpdateElemCore( hNewDGN, psMembers[0], 10, 0, 3, 1, 0 );
 
@@ -228,7 +227,7 @@ int main( int argc, char ** argv )
     asPoints[2].x = 7000;
     asPoints[2].y = 7000;
 
-    psMembers[1] = DGNCreateMultiPointElem( hNewDGN, DGNT_LINE_STRING, 3, 
+    psMembers[1] = DGNCreateMultiPointElem( hNewDGN, DGNT_LINE_STRING, 3,
                                             asPoints );
     DGNUpdateElemCore( hNewDGN, psMembers[1], 9, 0, 3, 1, 0 );
 
@@ -236,7 +235,7 @@ int main( int argc, char ** argv )
     asPoints[0].y = 5000;
 
     psLine = DGNCreateCellHeaderFromGroup( hNewDGN, "BE70", 1, NULL,
-                                           2, psMembers, asPoints + 0, 
+                                           2, psMembers, asPoints + 0,
                                            1.0, 1.0, 0.0 );
 
     DGNWriteElement( hNewDGN, psLine );
@@ -247,13 +246,10 @@ int main( int argc, char ** argv )
     DGNFreeElement( hNewDGN, psMembers[0] );
     DGNFreeElement( hNewDGN, psMembers[1] );
 
-/* -------------------------------------------------------------------- */
-/*      Close it.                                                       */
-/* -------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------- */
+    /*      Close it.                                                       */
+    /* -------------------------------------------------------------------- */
     DGNClose( hNewDGN );
 
     return 0;
 }
-
-
-

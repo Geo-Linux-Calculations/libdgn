@@ -55,7 +55,6 @@ CPL_CVSID("$Id: cpl_vsil.cpp,v 1.6 2006/01/11 00:29:54 fwarmerdam Exp $");
 /************************************************************************/
 
 int VSIMkdir( const char *pszPathname, long mode )
-
 {
 #ifdef WIN32
     return mkdir( pszPathname );
@@ -69,7 +68,6 @@ int VSIMkdir( const char *pszPathname, long mode )
 /*************************a***********************************************/
 
 int VSIUnlink( const char * pszFilename )
-
 {
     return unlink( pszFilename );
 }
@@ -79,7 +77,6 @@ int VSIUnlink( const char * pszFilename )
 /************************************************************************/
 
 int VSIRename( const char * oldpath, const char * newpath )
-
 {
     return rename( oldpath, newpath );
 }
@@ -89,7 +86,6 @@ int VSIRename( const char * oldpath, const char * newpath )
 /************************************************************************/
 
 int VSIRmdir( const char * pszDirname )
-
 {
     return rmdir( pszDirname );
 }
@@ -99,7 +95,6 @@ int VSIRmdir( const char * pszDirname )
 /************************************************************************/
 
 int VSIStatL( const char * pszFilename, VSIStatBufL *psStatBuf )
-
 {
     return( VSIStat( pszFilename, (VSIStatBuf *) psStatBuf ) );
 }
@@ -109,7 +104,6 @@ int VSIStatL( const char * pszFilename, VSIStatBufL *psStatBuf )
 /************************************************************************/
 
 FILE *VSIFOpenL( const char * pszFilename, const char * pszAccess )
-
 {
     return VSIFOpen( pszFilename, pszAccess );
 }
@@ -119,7 +113,6 @@ FILE *VSIFOpenL( const char * pszFilename, const char * pszAccess )
 /************************************************************************/
 
 int VSIFCloseL( FILE * fp )
-
 {
     return VSIFClose( fp );
 }
@@ -129,7 +122,6 @@ int VSIFCloseL( FILE * fp )
 /************************************************************************/
 
 int VSIFSeekL( FILE * fp, vsi_l_offset nOffset, int nWhence )
-
 {
     return VSIFSeek( fp, (int) nOffset, nWhence );
 }
@@ -139,7 +131,6 @@ int VSIFSeekL( FILE * fp, vsi_l_offset nOffset, int nWhence )
 /************************************************************************/
 
 vsi_l_offset VSIFTellL( FILE * fp )
-
 {
     return (vsi_l_offset) VSIFTell( fp );
 }
@@ -149,7 +140,6 @@ vsi_l_offset VSIFTellL( FILE * fp )
 /************************************************************************/
 
 void VSIRewindL( FILE * fp )
-
 {
     VSIFSeekL( fp, 0, SEEK_SET );
 }
@@ -159,7 +149,6 @@ void VSIRewindL( FILE * fp )
 /************************************************************************/
 
 int VSIFFlushL( FILE * fp )
-
 {
     VSIFFlush( fp );
     return 0;
@@ -170,7 +159,6 @@ int VSIFFlushL( FILE * fp )
 /************************************************************************/
 
 size_t VSIFReadL( void * pBuffer, size_t nSize, size_t nCount, FILE * fp )
-
 {
     return VSIFRead( pBuffer, nSize, nCount, fp );
 }
@@ -180,7 +168,6 @@ size_t VSIFReadL( void * pBuffer, size_t nSize, size_t nCount, FILE * fp )
 /************************************************************************/
 
 size_t VSIFWriteL( void * pBuffer, size_t nSize, size_t nCount, FILE * fp )
-
 {
     return VSIFWrite( pBuffer, nSize, nCount, fp );
 }
@@ -190,7 +177,6 @@ size_t VSIFWriteL( void * pBuffer, size_t nSize, size_t nCount, FILE * fp )
 /************************************************************************/
 
 int VSIFEofL( FILE * fp )
-
 {
     return VSIFEof( fp );
 }

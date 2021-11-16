@@ -110,7 +110,6 @@ CPL_CVSID("$Id: cpl_vsisimple.cpp,v 1.21 2006/03/27 15:24:41 fwarmerdam Exp $");
 /************************************************************************/
 
 FILE *VSIFOpen( const char * pszFilename, const char * pszAccess )
-
 {
     FILE * fp;
 
@@ -126,7 +125,6 @@ FILE *VSIFOpen( const char * pszFilename, const char * pszAccess )
 /************************************************************************/
 
 int VSIFClose( FILE * fp )
-
 {
     VSIDebug1( "VSIClose(%p)", fp );
 
@@ -138,7 +136,6 @@ int VSIFClose( FILE * fp )
 /************************************************************************/
 
 int VSIFSeek( FILE * fp, long nOffset, int nWhence )
-
 {
 #ifdef VSI_DEBUG
     if( nWhence == SEEK_SET )
@@ -157,7 +154,7 @@ int VSIFSeek( FILE * fp, long nOffset, int nWhence )
     {
         VSIDebug3( "VSIFSeek(%p,%d,%d-Unknown)", fp, nOffset, nWhence );
     }
-#endif 
+#endif
 
     return( fseek( fp, nOffset, nWhence ) );
 }
@@ -167,7 +164,6 @@ int VSIFSeek( FILE * fp, long nOffset, int nWhence )
 /************************************************************************/
 
 long VSIFTell( FILE * fp )
-
 {
     VSIDebug2( "VSIFTell(%p) = %ld", fp, ftell(fp) );
 
@@ -179,7 +175,6 @@ long VSIFTell( FILE * fp )
 /************************************************************************/
 
 void VSIRewind( FILE * fp )
-
 {
     VSIDebug1("VSIRewind(%p)", fp );
     rewind( fp );
@@ -190,11 +185,10 @@ void VSIRewind( FILE * fp )
 /************************************************************************/
 
 size_t VSIFRead( void * pBuffer, size_t nSize, size_t nCount, FILE * fp )
-
 {
     size_t nResult = fread( pBuffer, nSize, nCount, fp );
 
-    VSIDebug3( "VSIFRead(%p,%ld) = %ld", 
+    VSIDebug3( "VSIFRead(%p,%ld) = %ld",
                fp, (long) nSize * nCount, (long) nResult * nSize );
 
     return nResult;
@@ -205,11 +199,10 @@ size_t VSIFRead( void * pBuffer, size_t nSize, size_t nCount, FILE * fp )
 /************************************************************************/
 
 size_t VSIFWrite( const void *pBuffer, size_t nSize, size_t nCount, FILE * fp )
-
 {
     size_t nResult = fwrite( pBuffer, nSize, nCount, fp );
 
-    VSIDebug3( "VSIFWrite(%p,%ld) = %ld", 
+    VSIDebug3( "VSIFWrite(%p,%ld) = %ld",
                fp, (long) nSize * nCount, (long) nResult );
 
     return nResult;
@@ -220,7 +213,6 @@ size_t VSIFWrite( const void *pBuffer, size_t nSize, size_t nCount, FILE * fp )
 /************************************************************************/
 
 void VSIFFlush( FILE * fp )
-
 {
     VSIDebug1( "VSIFFlush(%p)", fp );
     fflush( fp );
@@ -231,7 +223,6 @@ void VSIFFlush( FILE * fp )
 /************************************************************************/
 
 char *VSIFGets( char *pszBuffer, int nBufferSize, FILE * fp )
-
 {
     return( fgets( pszBuffer, nBufferSize, fp ) );
 }
@@ -241,7 +232,6 @@ char *VSIFGets( char *pszBuffer, int nBufferSize, FILE * fp )
 /************************************************************************/
 
 int VSIFGetc( FILE * fp )
-
 {
     return( fgetc( fp ) );
 }
@@ -251,7 +241,6 @@ int VSIFGetc( FILE * fp )
 /************************************************************************/
 
 int VSIUngetc( int c, FILE * fp )
-
 {
     return( ungetc( c, fp ) );
 }
@@ -265,7 +254,6 @@ int VSIUngetc( int c, FILE * fp )
 /************************************************************************/
 
 int     VSIFPrintf( FILE * fp, const char * pszFormat, ... )
-
 {
     va_list     args;
     int         nReturn;
@@ -282,7 +270,6 @@ int     VSIFPrintf( FILE * fp, const char * pszFormat, ... )
 /************************************************************************/
 
 int VSIFEof( FILE * fp )
-
 {
     return( feof( fp ) );
 }
@@ -292,7 +279,6 @@ int VSIFEof( FILE * fp )
 /************************************************************************/
 
 int VSIFPuts( const char * pszString, FILE * fp )
-
 {
     return fputs( pszString, fp );
 }
@@ -302,7 +288,6 @@ int VSIFPuts( const char * pszString, FILE * fp )
 /************************************************************************/
 
 int VSIFPutc( int nChar, FILE * fp )
-
 {
     return( fputc( nChar, fp ) );
 }
@@ -312,7 +297,6 @@ int VSIFPutc( int nChar, FILE * fp )
 /************************************************************************/
 
 void *VSICalloc( size_t nCount, size_t nSize )
-
 {
     return( calloc( nCount, nSize ) );
 }
@@ -322,7 +306,6 @@ void *VSICalloc( size_t nCount, size_t nSize )
 /************************************************************************/
 
 void *VSIMalloc( size_t nSize )
-
 {
     return( malloc( nSize ) );
 }
@@ -332,7 +315,6 @@ void *VSIMalloc( size_t nSize )
 /************************************************************************/
 
 void * VSIRealloc( void * pData, size_t nNewSize )
-
 {
     return( realloc( pData, nNewSize ) );
 }
@@ -342,7 +324,6 @@ void * VSIRealloc( void * pData, size_t nNewSize )
 /************************************************************************/
 
 void VSIFree( void * pData )
-
 {
     if( pData != NULL )
         free( pData );
@@ -353,7 +334,6 @@ void VSIFree( void * pData )
 /************************************************************************/
 
 char *VSIStrdup( const char * pszString )
-
 {
     return( strdup( pszString ) );
 }
@@ -363,7 +343,6 @@ char *VSIStrdup( const char * pszString )
 /************************************************************************/
 
 int VSIStat( const char * pszFilename, VSIStatBuf * pStatBuf )
-
 {
 #if defined(macos_pre10)
     return -1;
@@ -377,10 +356,9 @@ int VSIStat( const char * pszFilename, VSIStatBuf * pStatBuf )
 /************************************************************************/
 
 unsigned long VSITime( unsigned long * pnTimeToSet )
-
 {
     time_t tTime;
-        
+
     tTime = time( NULL );
 
     if( pnTimeToSet != NULL )
@@ -394,7 +372,6 @@ unsigned long VSITime( unsigned long * pnTimeToSet )
 /************************************************************************/
 
 const char *VSICTime( unsigned long nTime )
-
 {
     time_t tTime = (time_t) nTime;
 
@@ -442,7 +419,6 @@ struct tm *VSILocalTime( const time_t *pnTime, struct tm *poBrokenTime )
 /************************************************************************/
 
 char *VSIStrerror( int nErrno )
-
 {
     return strerror( nErrno );
 }

@@ -15,16 +15,16 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
  * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  **********************************************************************
  *
@@ -59,7 +59,7 @@
  *
  * Revision 1.27  2003/05/27 20:44:16  warmerda
  * use VSI time services
- * 
+ *
  * Revision 1.26  2003/05/08 21:51:14  warmerda
  * added CPL{G,S}etConfigOption() usage
  *
@@ -79,7 +79,7 @@
 #  include "cpl_wince.h"
 #  include <wce_stdlib.h>
 #endif
- 
+
 #define TIMESTAMP_DEBUG
 
 CPL_CVSID("$Id: cpl_error.cpp,v 1.36 2006/03/07 22:05:32 fwarmerdam Exp $");
@@ -99,7 +99,8 @@ typedef struct errHandler
     CPLErrorHandler     pfnHandler;
 } CPLErrorHandlerNode;
 
-typedef struct {
+typedef struct
+{
     int     nLastErrNo;
     CPLErr  eLastErrType;
     CPLErrorHandlerNode *psHandlerStack;
@@ -112,9 +113,8 @@ typedef struct {
 /************************************************************************/
 
 static CPLErrorContext *CPLGetErrorContext()
-
 {
-    CPLErrorContext *psCtx = 
+    CPLErrorContext *psCtx =
         (CPLErrorContext *) CPLGetTLS( CTLS_ERRORCONTEXT );
 
     if( psCtx == NULL )
@@ -146,7 +146,7 @@ static CPLErrorContext *CPLGetErrorContext()
  * message is an informational warning, CE_Failure indicating that the
  * action failed, but that normal recover mechanisms will be used or
  * CE_Fatal meaning that a fatal error has occured, and that CPLError()
- * should not return.  
+ * should not return.
  *
  * The default behaviour of CPLError() is to report errors to stderr,
  * and to abort() after reporting a CE_Fatal error.  It is expected that
@@ -169,7 +169,7 @@ void    CPLError(CPLErr eErrClass, int err_no, const char *fmt, ...)
 {
     va_list args;
 
-    /* Expand the error message 
+    /* Expand the error message
      */
     va_start(args, fmt);
     CPLErrorV( eErrClass, err_no, fmt, args );
@@ -184,21 +184,21 @@ void    CPLErrorV(CPLErr eErrClass, int err_no, const char *fmt, va_list args )
 {
     CPLErrorContext *psCtx = CPLGetErrorContext();
 
-/* -------------------------------------------------------------------- */
-/*      Expand the error message                                        */
-/* -------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------- */
+    /*      Expand the error message                                        */
+    /* -------------------------------------------------------------------- */
 #if defined(HAVE_VSNPRINTF)
     {
         int nPR;
 
-        while( ((nPR = vsnprintf( psCtx->szLastErrMsg, 
-                                 psCtx->nLastErrMsgMax, fmt, args )) == -1
+        while( ((nPR = vsnprintf( psCtx->szLastErrMsg,
+                                  psCtx->nLastErrMsgMax, fmt, args )) == -1
                 || nPR >= psCtx->nLastErrMsgMax-1)
-               && psCtx->nLastErrMsgMax < 1000000 )
+                && psCtx->nLastErrMsgMax < 1000000 )
         {
             psCtx->nLastErrMsgMax *= 3;
-            psCtx = (CPLErrorContext *) 
-                CPLRealloc(psCtx, sizeof(CPLErrorContext) - DEFAULT_LAST_ERR_MSG_SIZE + psCtx->nLastErrMsgMax + 1);
+            psCtx = (CPLErrorContext *)
+                    CPLRealloc(psCtx, sizeof(CPLErrorContext) - DEFAULT_LAST_ERR_MSG_SIZE + psCtx->nLastErrMsgMax + 1);
             CPLSetTLS( CTLS_ERRORCONTEXT, psCtx, TRUE );
         }
     }
@@ -206,22 +206,22 @@ void    CPLErrorV(CPLErr eErrClass, int err_no, const char *fmt, va_list args )
     vsprintf( psCtx->szLastErrMsg, fmt, args);
 #endif
 
-/* -------------------------------------------------------------------- */
-/*      If the user provided his own error handling function, then      */
-/*      call it, otherwise print the error to stderr and return.        */
-/* -------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------- */
+    /*      If the user provided his own error handling function, then      */
+    /*      call it, otherwise print the error to stderr and return.        */
+    /* -------------------------------------------------------------------- */
     psCtx->nLastErrNo = err_no;
     psCtx->eLastErrType = eErrClass;
 
     if( CPLGetConfigOption("CPL_LOG_ERRORS",NULL) != NULL )
         CPLDebug( "CPLError", "%s", psCtx->szLastErrMsg );
 
-/* -------------------------------------------------------------------- */
-/*      Invoke the current error handler.                               */
-/* -------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------- */
+    /*      Invoke the current error handler.                               */
+    /* -------------------------------------------------------------------- */
     if( psCtx->psHandlerStack != NULL )
     {
-        psCtx->psHandlerStack->pfnHandler(eErrClass, err_no, 
+        psCtx->psHandlerStack->pfnHandler(eErrClass, err_no,
                                           psCtx->szLastErrMsg);
     }
     else
@@ -253,15 +253,14 @@ void    CPLErrorV(CPLErr eErrClass, int err_no, const char *fmt, va_list args )
  *
  * Categories are usually an identifier for the subsystem producing the
  * error.  For instance "GDAL" might be used for the GDAL core, and "TIFF"
- * for messages from the TIFF translator.  
+ * for messages from the TIFF translator.
  *
  * @param pszCategory name of the debugging message category.
  * @param pszFormat printf() style format string for message to display.
  *        Remaining arguments are assumed to be for format.
- */ 
+ */
 
 void CPLDebug( const char * pszCategory, const char * pszFormat, ... )
-
 {
     CPLErrorContext *psCtx = CPLGetErrorContext();
     char        *pszMessage;
@@ -270,9 +269,9 @@ void CPLDebug( const char * pszCategory, const char * pszFormat, ... )
 
 #define ERROR_MAX 25000
 
-/* -------------------------------------------------------------------- */
-/*      Does this message pass our current criteria?                    */
-/* -------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------- */
+    /*      Does this message pass our current criteria?                    */
+    /* -------------------------------------------------------------------- */
     if( pszDebug == NULL )
         return;
 
@@ -290,25 +289,25 @@ void CPLDebug( const char * pszCategory, const char * pszFormat, ... )
             return;
     }
 
-/* -------------------------------------------------------------------- */
-/*    Allocate a block for the error.                                   */
-/* -------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------- */
+    /*    Allocate a block for the error.                                   */
+    /* -------------------------------------------------------------------- */
     pszMessage = (char *) VSIMalloc( ERROR_MAX );
     if( pszMessage == NULL )
         return;
-        
-/* -------------------------------------------------------------------- */
-/*      Dal -- always log a timestamp as the first part of the line     */
-/*      to ensure one is looking at what one should be looking at!      */
-/* -------------------------------------------------------------------- */
+
+    /* -------------------------------------------------------------------- */
+    /*      Dal -- always log a timestamp as the first part of the line     */
+    /*      to ensure one is looking at what one should be looking at!      */
+    /* -------------------------------------------------------------------- */
 
     pszMessage[0] = '\0';
 #ifdef TIMESTAMP_DEBUG
     if( CPLGetConfigOption( "CPL_TIMESTAMP", NULL ) != NULL )
     {
         strcpy( pszMessage, VSICTime( VSITime(NULL) ) );
-        
-        // On windows anyway, ctime puts a \n at the end, but I'm not 
+
+        // On windows anyway, ctime puts a \n at the end, but I'm not
         // convinced this is standard behaviour, so we'll get rid of it
         // carefully
 
@@ -320,27 +319,27 @@ void CPLDebug( const char * pszCategory, const char * pszFormat, ... )
     }
 #endif
 
-/* -------------------------------------------------------------------- */
-/*      Add the category.                                               */
-/* -------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------- */
+    /*      Add the category.                                               */
+    /* -------------------------------------------------------------------- */
     strcat( pszMessage, pszCategory );
     strcat( pszMessage, ": " );
-    
-/* -------------------------------------------------------------------- */
-/*      Format the application provided portion of the debug message.   */
-/* -------------------------------------------------------------------- */
+
+    /* -------------------------------------------------------------------- */
+    /*      Format the application provided portion of the debug message.   */
+    /* -------------------------------------------------------------------- */
     va_start(args, pszFormat);
 #if defined(HAVE_VSNPRINTF)
-    vsnprintf(pszMessage+strlen(pszMessage), ERROR_MAX - strlen(pszMessage), 
+    vsnprintf(pszMessage+strlen(pszMessage), ERROR_MAX - strlen(pszMessage),
               pszFormat, args);
 #else
     vsprintf(pszMessage+strlen(pszMessage), pszFormat, args);
 #endif
     va_end(args);
 
-/* -------------------------------------------------------------------- */
-/*      Invoke the current error handler.                               */
-/* -------------------------------------------------------------------- */
+    /* -------------------------------------------------------------------- */
+    /*      Invoke the current error handler.                               */
+    /* -------------------------------------------------------------------- */
     if( psCtx->psHandlerStack != NULL )
     {
         psCtx->psHandlerStack->pfnHandler( CE_Debug, CPLE_None, pszMessage );
@@ -442,9 +441,8 @@ const char* CPL_STDCALL CPLGetLastErrorMsg()
 /*                       CPLDefaultErrorHandler()                       */
 /************************************************************************/
 
-void CPL_STDCALL CPLDefaultErrorHandler( CPLErr eErrClass, int nError, 
-                             const char * pszErrorMsg )
-
+void CPL_STDCALL CPLDefaultErrorHandler( CPLErr eErrClass, int nError,
+        const char * pszErrorMsg )
 {
     static int       bLogInit = FALSE;
     static FILE *    fpLog = stderr;
@@ -476,9 +474,8 @@ void CPL_STDCALL CPLDefaultErrorHandler( CPLErr eErrClass, int nError,
 /*                        CPLQuietErrorHandler()                        */
 /************************************************************************/
 
-void CPL_STDCALL CPLQuietErrorHandler( CPLErr eErrClass , int nError, 
-                           const char * pszErrorMsg )
-
+void CPL_STDCALL CPLQuietErrorHandler( CPLErr eErrClass, int nError,
+                                       const char * pszErrorMsg )
 {
     if( eErrClass == CE_Debug )
         CPLDefaultErrorHandler( eErrClass, nError, pszErrorMsg );
@@ -488,9 +485,8 @@ void CPL_STDCALL CPLQuietErrorHandler( CPLErr eErrClass , int nError,
 /*                       CPLLoggingErrorHandler()                       */
 /************************************************************************/
 
-void CPL_STDCALL CPLLoggingErrorHandler( CPLErr eErrClass, int nError, 
-                             const char * pszErrorMsg )
-
+void CPL_STDCALL CPLLoggingErrorHandler( CPLErr eErrClass, int nError,
+        const char * pszErrorMsg )
 {
     static int       bLogInit = FALSE;
     static FILE *    fpLog = stderr;
@@ -517,7 +513,7 @@ void CPL_STDCALL CPLLoggingErrorHandler( CPLErr eErrClass, int nError,
 
             strcpy( path, cpl_log );
 
-            while( (fpLog = fopen( path, "rt" )) != NULL ) 
+            while( (fpLog = fopen( path, "rt" )) != NULL )
             {
                 fclose( fpLog );
 
@@ -573,7 +569,7 @@ void CPL_STDCALL CPLLoggingErrorHandler( CPLErr eErrClass, int nError,
  * </pre>
  *
  * Pass NULL to come back to the default behavior.  The default behaviour
- * (CPLDefaultErrorHandler()) is to write the message to stderr. 
+ * (CPLDefaultErrorHandler()) is to write the message to stderr.
  *
  * The msg will be a partially formatted error message not containing the
  * "ERROR %d:" portion emitted by the default handler.  Message formatting
@@ -589,19 +585,19 @@ void CPL_STDCALL CPLLoggingErrorHandler( CPLErr eErrClass, int nError,
  *
  * Note that error handlers set with CPLSetErrorHandler() apply to all
  * threads in an application, while error handlers set with CPLPushErrorHandler
- * are thread-local.  However, any error handlers pushed with 
- * CPLPushErrorHandler (and not removed with CPLPopErrorHandler) take 
- * precidence over the global error handlers set with CPLSetErrorHandler(). 
+ * are thread-local.  However, any error handlers pushed with
+ * CPLPushErrorHandler (and not removed with CPLPopErrorHandler) take
+ * precidence over the global error handlers set with CPLSetErrorHandler().
  * Generally speaking CPLSetErrorHandler() would be used to set a desired
  * global error handler, while CPLPushErrorHandler() would be used to install
  * a temporary local error handler, such as CPLQuietErrorHandler() to suppress
- * error reporting in a limited segment of code. 
+ * error reporting in a limited segment of code.
  *
  * @param pfnErrorHandlerNew new error handler function.
  * @return returns the previously installed error handler.
- */ 
+ */
 
-CPLErrorHandler CPL_STDCALL 
+CPLErrorHandler CPL_STDCALL
 CPLSetErrorHandler( CPLErrorHandler pfnErrorHandlerNew )
 {
     CPLErrorHandler     pfnOldHandler = pfnErrorHandler;
@@ -609,7 +605,7 @@ CPLSetErrorHandler( CPLErrorHandler pfnErrorHandlerNew )
 
     if( psCtx->psHandlerStack != NULL )
     {
-        CPLDebug( "CPL", 
+        CPLDebug( "CPL",
                   "CPLSetErrorHandler() called with an error handler on\n"
                   "the local stack.  New error handler will not be used immediately.\n" );
     }
@@ -619,7 +615,7 @@ CPLSetErrorHandler( CPLErrorHandler pfnErrorHandlerNew )
         CPLMutexHolderD( &hErrorMutex );
 
         pfnOldHandler = pfnErrorHandler;
-        
+
         if( pfnErrorHandler == NULL )
             pfnErrorHandler = CPLDefaultErrorHandler;
         else
@@ -639,14 +635,13 @@ CPLSetErrorHandler( CPLErrorHandler pfnErrorHandlerNew )
  * This pushes a new error handler on the thread-local error handler
  * stack.  This handler will be used untill removed with CPLPopErrorHandler().
  *
- * The CPLSetErrorHandler() docs have further information on how 
+ * The CPLSetErrorHandler() docs have further information on how
  * CPLError handlers work.
  *
  * @param pfnErrorHandlerNew new error handler function.
  */
 
 void CPL_STDCALL CPLPushErrorHandler( CPLErrorHandler pfnErrorHandlerNew )
-
 {
     CPLErrorContext *psCtx = CPLGetErrorContext();
     CPLErrorHandlerNode         *psNode;
@@ -665,14 +660,13 @@ void CPL_STDCALL CPLPushErrorHandler( CPLErrorHandler pfnErrorHandlerNew )
 /**
  * Pop error handler off stack.
  *
- * Discards the current error handler on the error handler stack, and restores 
+ * Discards the current error handler on the error handler stack, and restores
  * the one in use before the last CPLPushErrorHandler() call.  This method
  * has no effect if there are no error handlers on the current threads error
- * handler stack. 
- */ 
+ * handler stack.
+ */
 
 void CPL_STDCALL CPLPopErrorHandler()
-
 {
     CPLErrorContext *psCtx = CPLGetErrorContext();
 
@@ -704,12 +698,10 @@ void CPL_STDCALL CPLPopErrorHandler()
  */
 
 void CPL_STDCALL _CPLAssert( const char * pszExpression, const char * pszFile,
-                 int iLine )
-
+                             int iLine )
 {
     CPLError( CE_Fatal, CPLE_AssertionFailed,
               "Assertion `%s' failed\n"
               "in file `%s', line %d\n",
               pszExpression, pszFile, iLine );
 }
-
